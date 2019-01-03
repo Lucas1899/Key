@@ -10,9 +10,8 @@
 
 #include "libraries/HX711.h"
 #include "usefulFunction.ino"
-#include "libraries/QueueArray.h" https://playground.arduino.cc/Code/QueueArray#Download
 
-#define PIN_LED 13
+#define PIN_LED     13
 
 // Creates struct with paraeters loadcell (HX711), calibration factor (float),
 // solenoidPWN(unsigned integer 8 digits),  tumberPositon (uint 1 digit).
@@ -28,71 +27,34 @@ typedef struct {
 } keyModule;
 
 // Creates set of structs for each key, pins inputed.
-// 7050 is from example code, 440 lb max scale set up, TODO CHANGE TO CORRECT VALUE
+// 7050 is from example code, 440 lb max scale set up, CHANGE TO CORRECT VALUE
 keyModule keyOne   = {HX711(1 ,  2), -7050.0, 3,  0, 0};
 keyModule keyTwo   = {HX711(4 ,  5), -7050.0, 6,  0, 0};
 keyModule keyThree = {HX711(7 ,  8), -7050.0, 9,  0, 0};
 keyModule keyFour  = {HX711(12, 11), -7050.0, 10, 0, 0};
 keyModule keyFive  = {HX711(14, 15), -7050.0, 16, 0, 0};
 keyModule keys[]   = {keyOne, KeyTwo, keyThree, keyFour, keyFive};
-// in tumblerOrder, first entry is the tumbler number of key 1,
-// second is of key 2, etc.
-int tumblerOrder[] = [0, 0, 0, 0, 0]
+const uint8_t NUM_BUTTONS = sizeof(keys) / sizeof(keys[0]);
 
-func findZeroTumblers(sticky, itNum){
-  //finds all zero tumbler buttons when first testing a lock
-  if sticky == 0{
-      tumblerOrder[indexVal] = keys[indexVal].tumblerPosition
-    } else {
-      tumblerOrder[indexVal] += 1
+QueueArray<uint8_t> findHardKeys() {
+  QueueArray<uint8_t> stickyIndexes;
+  for(int index = 0; index < NUM_BUTTONS; index++) {
+    // TODO do test procedure here.
+    bool isSticky = false;
+    if(isSticky) {
+      stickyIndexes.enqueue(index);
     }
-}
-
-func getTumblersReady(){
-  // presses buttons already found out, puts tumblers in position to test next button
-  pressButtonCounter = 1
-  bool buttonsLeftToPress = true
-  uint1_t pressList[] = {0, 0, 0, 0, 0}
-
-  while buttonsLeftToPress == true {
-    if pressButtonCounter > 5{
-      print("Error! Pressed more buttons than exist!")
-      //flash LED 4 times?
-    }
-    for(uint8_t indexVal = 0; indexVal < sizeof(keys) / sizeof(keys[0]); indexVal++) {
-      if pressButtonCounter = keys[indexVal].tumblerPosition{
-        pressList[indexVal] = 1
-      }
-    }
-    if pressList != {0, 0, 0, 0, 0} {
-      //press buttons in list at same time
-      pressList = {0, 0, 0, 0, 0}
-    } else{
-      buttonsLeftToPress = flase
-    }
-    pressButtonCounter += 1
   }
+  return stickyIndexes;
 }
 
-func testIfSticky(){
-  //test other buttons, yields sticky = 1 if any are sticky
+void getTumblersReady(uint8_t[NUM_BUTTONS, NUM_BUTTONS] lastPath) {
 
-  //iterate over solenoids{
-    if feedbackFromSolenoids > 1{
-      sticky = 1
-    } else{
-    }
-  //}
-  return sticky
-}
-
-func feedbackFromSolenoids(){
-  //This is just to act as a dummy func, will repalce with actual code
 }
 
 void setup() {
   // Sets up solenoid pins
-  for(uint8_t indexVal = 0; indexVal < sizeof(keys) / sizeof(keys[0]); indexVal++) {
+  for(uint8_t indexVal = 0; indexVal < NUM_BUTTONS; indexVal++) {
     pinMode(keys[indexVal].solenoidPWM, OUTPUT);
     analogWrite(keys[indexVal].solenoidPWM, 0);
     keys[indexVal].loadCell.tare();
@@ -111,15 +73,36 @@ void setup() {
 void loop() {
   // Solves the lock
   // -> Finds available buttons
-  for(int index = 0; index < )
+  uint8_t tumblerPositions[NUM_BUTTONS] = {0};
   // -> While we have not run out of buttons
-  while() {
-
+  uint8_t solutionArray[NUM_BUTTONS, NUM_BUTTONS] = {NULL_BUTTON};
+  for(uint8_t step = 0; step < NUM_BUTTONS; step++) {
+    QueueArray<uint8_t> resultedInSticky;
+    QueueArray<uint8_t> wasNotSticky;
+    getTumblersReady(solutionArray);
   }
   // Reports data
   while(1) {
+    for(uint8_t step = 0; step < NUM_BUTTONS; step++) {
+      for(uint8_t index = 0; index < NUM_BUTTONS; index++) {
 
+      }
+    }
+    digitalWrite(PIN_LED, HIGH);
+    delay(500);
+    digitalWrite(PIN_LED, LOW);
   }
+
+
+
+
+
+
+
+
+
+
+
   //goes thorugh buttons, finds their tumbler positions
   if itNum > 5{
     print("Error! Couldn't put buttons into 6 tumbler positions")
@@ -128,7 +111,7 @@ void loop() {
   for(uint8_t indexVal = 0; indexVal < sizeof(keys) / sizeof(keys[0]); indexVal++) {
     int sticky = 0
     getTumblersReady();
-    sticky = testIfSticky();
+    findHardKeys();
     if itNum == 0{
       findZeroTumblers(sticky, itNum);
     } else if sticky == 1{
