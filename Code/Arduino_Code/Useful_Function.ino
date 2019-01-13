@@ -51,19 +51,43 @@ void getTumblersReady(){
 
 void testForSticky(){
   //test other buttons, yields sticky = 1 if any are sticky
-  /*
+
   for(uint8_t indexVal = 0; indexVal < sizeof(sticky) / sizeof(sticky[0]); indexVal++) {
-    if feedbackFromSolenoids > 1{
-      sticky[index] = 1
+    bool checkerGate = true
+    keys[indexVal].pressure = 0
+    while chckerGate == true{
+      feedbackFromLoads(indexVal, 10)
+    }
+    if keys[indexVal].pressure > 1.0{
+      sticky[indexVal] = 1
     } else{
-      
+
     }
   }
   return sticky
-} */
+}
 
-void feedbackFromSolenoids(){
-  //This is just to act as a dummy func, will repalce with actual code
+void feedbackFromLoads(int solenoidToRead, int timerSpace){ //<- CHECK TIMER SPACE SO THAT BOARD HAS TIME TO MAKE MEASUREMENTS
+  // reads the output of the load cell on a buttons' location <- double check code, make it better, add solenoid func
+  bool timeIsRipe = true
+  float currentTime = millis()
+  int loopCount = 0
+  while timeIsRipe = true
+    if millis() == currentTime + timerSpace * loopCount{
+      analogWite(keys[SolenoidToRead[3]], 10 * loopCount)
+      // double check that increasing amount on is correct way to do this,
+      // want 'steps' in force so that avg's can have clear differences between them and not miss peaks
+      if keys[solenoidToRead].pressure < keys[solenoidToRead[1]].read_average(10){
+        keys[solenoidToRead].pressure = keys[solenoidToRead[1]].read_average(10)
+      } else{
+        timeIsRipe = false
+      }
+      loopCount += 1
+    } else{
+
+    }
+  }
+
 }
 
 bool testForOtherSticky(int testVal){
