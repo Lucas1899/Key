@@ -48,7 +48,7 @@ void loop() {
             bool lock = false;
             for(int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++){
               // check that no gaps exist, all 0's fine as do nothing and then skip
-              if loopList[index] >= 1{
+              if loopList[index] >= 1 {
                 // check that every number >= 1 has something right below it, no gaps
                 for(int test = 0; test < sizeof(keys) / sizeof(keys[0]); test++){
                   if loopList[test] == loopList[index - 1]{
@@ -64,7 +64,7 @@ void loop() {
                 // skip
               }
             }
-            if fine == false{
+            if fine == false {
               // skip combo, has gaps
             } else {
               // go thorugh sequence of pushing buttons
@@ -74,8 +74,8 @@ void loop() {
                 // must be done as there are no gaps)
                 if doneYet == false{
                   bool gotOne = false;
-                  for(int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++) {
-                    if loopList[index] == counter {
+                  for(int index = 1; index < sizeof(keys) / sizeof(keys[0]); index++) {
+                    if loopList[index] == counter and loopList[index] != 0 {
                       keys[index].write(45);
                       gotOne = true;
                     }
