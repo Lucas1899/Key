@@ -21,7 +21,7 @@ Servo keyThree;
 Servo keyFour;
 Servo keyFive;
 Servo keyLatch;
-Servo keys[] = {keyOne, KeyTwo, keyThree, keyFour, keyFive, keyLatch};
+Servo keys[] = {keyOne, keyTwo, keyThree, keyFour, keyFive, keyLatch};
 const uint8_t NUM_BUTTONS = sizeof(keys) / sizeof(keys[0]);
 
 
@@ -43,19 +43,24 @@ void loop() {
           for(int e = 0; e = 5; e++) {
             // check that there are no gaps in combo
             // (can't go from first buttons to third buttons)
-            int loopList[] = [a, b, c, d, e];
+            int first  = a;
+            int second = b;
+            int third  = c;
+            int fourth = d;
+            int fifth  = e;
+            int loopList[] = {first, second, third, fourth, fifth};
             bool fine = false;
             bool lock = false;
             for(int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++){
               // check that no gaps exist, all 0's fine as do nothing and then skip
-              if loopList[index] >= 1 {
+              if (loopList[index] >= 1) {
                 // check that every number >= 1 has something right below it, no gaps
                 for(int test = 0; test < sizeof(keys) / sizeof(keys[0]); test++){
-                  if loopList[test] == loopList[index - 1]{
+                  if (loopList[test] == loopList[index - 1]){
                     fine = true;
                     // lock makes it that once get that something is below, then it is fine
                     lock = true;
-                  } else if lock == false{
+                  } else if (lock == false){
                     fine = false;
                   }
                 }
@@ -64,18 +69,18 @@ void loop() {
                 // skip
               }
             }
-            if fine == false {
+            if (fine == false) {
               // skip combo, has gaps
             } else {
               // go thorugh sequence of pushing buttons
               bool doneYet = false;
-              for(int counter = 0; counter = 5: counter++){
+              for(int counter = 0; counter = 5; counter++){
                 // check if sequence done (if did none on last entry,
                 // must be done as there are no gaps)
-                if doneYet == false{
+                if (doneYet == false){
                   bool gotOne = false;
                   for(int index = 1; index < sizeof(keys) / sizeof(keys[0]); index++) {
-                    if loopList[index] == counter and loopList[index] != 0 {
+                    if (loopList[index] == counter and loopList[index] != 0){
                       keys[index].write(45);
                       gotOne = true;
                     }
@@ -83,11 +88,11 @@ void loop() {
                   delay(30);
                   // set them back once pressed
                   for(int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++) {
-                    if loopList[index] == counter {
+                    if (loopList[index] == counter) {
                       keys[index].write(0);
                     }
                   }
-                  if gotOne = false {
+                  if (gotOne = false) {
                     doneYet = true;
                   }
                 }
