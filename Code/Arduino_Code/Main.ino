@@ -6,6 +6,7 @@
 -*
 -* Description:
 -*  This program controls the KeyKruncher lock destroyer.
+-*  Attempts clever algorythms
 \*///////////////////////////////////////////////////////
 
 #include "libraries/HX711.h"
