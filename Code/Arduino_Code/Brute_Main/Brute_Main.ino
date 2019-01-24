@@ -32,6 +32,7 @@ void setup() {
   keyFour.attach(9);
   keyFive.attach(10);
   keyLatch.attach(11);
+  pinMode(PIN_LED, OUTPUT);
 }
 
 void loop() {
@@ -69,39 +70,50 @@ void loop() {
                 // skip
               }
             }
+            
             if (fine == false) {
               // skip combo, has gaps
             } else {
               // go thorugh sequence of pushing buttons
               bool doneYet = false;
-              for(int counter = 0; counter = 5; counter++){
+              for(int counter = 1; counter = 5; counter++){
                 // check if sequence done (if did none on last entry,
                 // must be done as there are no gaps)
+                bool gotOne = false;
                 if (doneYet == false){
-                  bool gotOne = false;
-                  for(int index = 1; index < sizeof(keys) / sizeof(keys[0]); index++) {
-                    if (loopList[index] == counter and loopList[index] != 0){
-                      keys[index].write(45);
-                      gotOne = true;
-                    }
-                  }
-                  delay(30);
-                  // set them back once pressed
+                  gotOne = false;
                   for(int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++) {
-                    if (loopList[index] == counter) {
-                      keys[index].write(0);
+                    if ((loopList[index] == counter) and (loopList[index] != 0)){
+                      keys[index].write(45);
+                        
+                      }
                     }
-                  }
-                  if (gotOne = false) {
-                    doneYet = true;
+                    
+                    delay(10);
+                    
+                    // set them back once pressed
+                    for(int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++) {
+                      if (loopList[index] == counter) {
+                        keys[index].write(-45);
+                        
+                      }
+                    }
+                    if (gotOne == false) {
+                      doneYet = true; 
+                      
+                    } else{
+                      
+                    }
+                  } else {
+                    break;
                   }
                 }
-              }
-              keys[5].write(180);
-              delay(30);
-              keys[5].write(0);
-              // find some way to check if turned all the way, if so then stop
-            }
+                keys[5].write(180);
+                delay(30);
+                keys[5].write(0);
+                
+                // find some way to check if turned all the way, if so then stop
+             }  
           }
         }
       }
